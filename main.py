@@ -1359,7 +1359,7 @@ async def self(interaction: discord.Interaction, query: str):
             embed = discord.Embed(title = f"{item_list[0]['word']}", description = f"**Author: {item_list[0]['author']}**\n\n{(item_list[0]['definition'].replace("[", "")).replace("]", "")}", color = Color.random())
             embed.set_footer(text = f"Requested by {interaction.user.name} - Page 1/{len(item_list)}", icon_url = interaction.user.avatar.url)
             
-            if len(request_data) == 1:
+            if len(item_list) == 1:
                 await interaction.edit_original_response(embed = embed)
             else:
                 await interaction.edit_original_response(embed = embed, view = UrbanDictPageView(item_list))
