@@ -1309,6 +1309,64 @@ async def self(interaction: discord.Interaction, equation: str):
         embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
         await interaction.edit_original_response(embed = embed)
 
+# Urban Dictionary command
+@tree.command(name = "urban_dictionary", description = "Search Urban Dictionary.")
+@app_commands.checks.cooldown(1,10)
+async def self(interaction: discord.Interaction, query: str):
+    await interaction.response.defer()
+
+    embed = discord.Embed(title = "Searching...")
+    embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
+    await interaction.followup.send(embed = embed)
+    
+    query = query.replace(" ", "%20")
+    request = requests.get(f"https://api.urbandictionary.com/v0/define?term={query}")
+    request_data = request.json()
+
+    item_list = []
+
+    if len(request_data['list']) != 0:
+        for item in request_data['list']:
+            item_list.append(item)
+        
+        class UrbanDictPageView(View):
+            def __init__(self, pages):
+                super().__init__(timeout = None)
+                self.page = 0
+                self.pages = pages
+        
+            @discord.ui.button(label="<", style=ButtonStyle.green, custom_id="prev")
+            async def prev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+                if self.page > 0:
+                    self.page -= 1
+                else:
+                    self.page = len(self.pages) - 1
+                embed = discord.Embed(title = f"{self.pages[self.page]['word']}", description = f"**Author: {self.pages[self.page]['author']}**\n\n{(self.pages[self.page]['definition'].replace("[", "")).replace("]", "")}", color = Color.random())
+                embed.set_footer(text = f"Requested by {interaction.user.name} - Page {self.page + 1}/{len(item_list)}", icon_url = interaction.user.avatar.url)
+                await interaction.response.edit_message(embed = embed)
+
+            @discord.ui.button(label=">", style=ButtonStyle.green, custom_id="next")
+            async def next_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+                if self.page < len(self.pages) - 1:
+                    self.page += 1
+                else:
+                    self.page = 0
+                embed = discord.Embed(title = f"{self.pages[self.page]['word']}", description = f"**Author: {self.pages[self.page]['author']}**\n\n{(self.pages[self.page]['definition'].replace("[", "")).replace("]", "")}", color = Color.random())
+                embed.set_footer(text = f"Requested by {interaction.user.name} - Page {self.page + 1}/{len(item_list)}")
+                await interaction.response.edit_message(embed = embed)
+
+        embed = discord.Embed(title = f"{item_list[0]['word']}", description = f"**Author: {item_list[0]['author']}**\n\n{(item_list[0]['definition'].replace("[", "")).replace("]", "")}", color = Color.random())
+        embed.set_footer(text = f"Requested by {interaction.user.name} - Page 1/{len(item_list)}", icon_url = interaction.user.avatar.url)
+        
+        if len(request_data) == 1:
+            await interaction.edit_original_response(embed = embed)
+        else:
+            await interaction.edit_original_response(embed = embed, view = UrbanDictPageView(item_list))
+    else:
+        embed = discord.Embed(title = "No results found.", color = Color.red())
+        embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
+        await interaction.followup.send(embed = embed)
+
 # Wikipedia command
 @tree.command(name = "wikipedia", description = "Search Wikipedia for information.")
 @app_commands.checks.cooldown(1, 5)
