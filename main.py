@@ -1342,7 +1342,7 @@ async def self(interaction: discord.Interaction, query: str):
                         self.page -= 1
                     else:
                         self.page = len(self.pages) - 1
-                    embed = discord.Embed(title = f"{self.pages[self.page]['word']}", description = f"**Author: {self.pages[self.page]['author']}**\n\n{(self.pages[self.page]['definition'].replace("[", "")).replace("]", "")}", color = Color.random())
+                    embed = discord.Embed(title = f"{self.pages[self.page]['word']}", description = f"**Author: {self.pages[self.page]['author']}**\n\n{(self.pages[self.page]['definition'].replace('[', '')).replace(']', '')}", color = Color.random())
                     embed.set_footer(text = f"Requested by {interaction.user.name} - Page {self.page + 1}/{len(item_list)}", icon_url = interaction.user.avatar.url)
                     await interaction.response.edit_message(embed = embed)
 
@@ -1352,11 +1352,11 @@ async def self(interaction: discord.Interaction, query: str):
                         self.page += 1
                     else:
                         self.page = 0
-                    embed = discord.Embed(title = f"{self.pages[self.page]['word']}", description = f"**Author: {self.pages[self.page]['author']}**\n\n{(self.pages[self.page]['definition'].replace("[", "")).replace("]", "")}", color = Color.random())
+                    embed = discord.Embed(title = f"{self.pages[self.page]['word']}", description = f"**Author: {self.pages[self.page]['author']}**\n\n{(self.pages[self.page]['definition'].replace('[', '')).replace(']', '')}", color = Color.random())
                     embed.set_footer(text = f"Requested by {interaction.user.name} - Page {self.page + 1}/{len(item_list)}")
                     await interaction.response.edit_message(embed = embed)
 
-            embed = discord.Embed(title = f"{item_list[0]['word']}", description = f"**Author: {item_list[0]['author']}**\n\n{(item_list[0]['definition'].replace("[", "")).replace("]", "")}", color = Color.random())
+            embed = discord.Embed(title = f"{item_list[0]['word']}", description = f"**Author: {item_list[0]['author']}**\n\n{(item_list[0]['definition'].replace('[', '')).replace(']', '')}", color = Color.random())
             embed.set_footer(text = f"Requested by {interaction.user.name} - Page 1/{len(item_list)}", icon_url = interaction.user.avatar.url)
             
             if len(item_list) == 1:
