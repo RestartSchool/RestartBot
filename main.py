@@ -1315,11 +1315,11 @@ async def self(interaction: discord.Interaction, url: str):
 async def self(interaction: discord.Interaction, query: str):
     await interaction.response.defer()
 
+    embed = discord.Embed(title = "Searching...")
+    embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
+    await interaction.followup.send(embed = embed)
+
     try:
-        embed = discord.Embed(title = "Searching...")
-        embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
-        await interaction.followup.send(embed = embed)
-        
         query = query.replace(" ", "%20")
         request = requests.get(f"https://api.urbandictionary.com/v0/define?term={query}")
         request_data = request.json()
@@ -1369,6 +1369,8 @@ async def self(interaction: discord.Interaction, query: str):
             await interaction.followup.send(embed = embed)
     except Exception:
         embed = discord.Embed(title = "An error has occured.", description = "Please try again later or message <@563372552643149825> for assistance.")
+        embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
+        await interaction.edit_original_response(embed = embed, view = None)
 
 # Wikipedia command
 @tree.command(name = "wikipedia", description = "Search Wikipedia for information.")
