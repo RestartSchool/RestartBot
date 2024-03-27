@@ -1284,30 +1284,30 @@ async def self(interaction: discord.Interaction, url: str):
 
 # --- MISC COMMANDS ---
 
-# Equation Solver command
-@tree.command(name = "equation_solver", description= "Solve an equation or expression.")
-@app_commands.checks.cooldown(1, 10)
-async def self(interaction: discord.Interaction, equation: str):
-    await interaction.response.defer()
+# Equation Solver command (broken)
+# @tree.command(name = "equation_solver", description= "Solve an equation or expression.")
+# @app_commands.checks.cooldown(1, 10)
+# async def self(interaction: discord.Interaction, equation: str):
+#     await interaction.response.defer()
     
-    try:
-        # Send request to mathjs
-        request_url = f"http://api.mathjs.org/v4/?expr={equation.replace(" ", "%20")}"
-        request = requests.get(request_url)
-        request_data = request.json()
+#     try:
+#         # Send request to mathjs
+#         request_url = f"http://api.mathjs.org/v4/?expr={equation.replace(' ', '%20')}"
+#         request = requests.get(request_url)
+#         request_data = request.json()
 
-        # Generate embed
-        embed = discord.Embed(title = "Equation Solver")
-        embed.add_field(name = "Equation / Expression", value = equation)
-        embed.add_field(name = "Solution", value = request_data)
-        embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
+#         # Generate embed
+#         embed = discord.Embed(title = "Equation Solver")
+#         embed.add_field(name = "Equation / Expression", value = equation)
+#         embed.add_field(name = "Solution", value = request_data)
+#         embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
 
-        # Edit loading message with new embed
-        await interaction.edit_original_response(embed = embed)
-    except Exception:
-        embed = discord.Embed(title = "Error", description = "An error has occured. Solutions:\n\n**1.** Is the expression / equation valid?\n**2.** Are you using any forbidden characters?\n**3.** Try again later.")
-        embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
-        await interaction.edit_original_response(embed = embed)
+#         # Edit loading message with new embed
+#         await interaction.edit_original_response(embed = embed)
+#     except Exception:
+#         embed = discord.Embed(title = "Error", description = "An error has occured. Solutions:\n\n**1.** Is the expression / equation valid?\n**2.** Are you using any forbidden characters?\n**3.** Try again later.")
+#         embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
+#         await interaction.edit_original_response(embed = embed)
 
 # Urban Dictionary command
 @tree.command(name = "urban_dictionary", description = "Search Urban Dictionary.")
