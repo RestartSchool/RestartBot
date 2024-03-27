@@ -1406,7 +1406,7 @@ async def on_app_command_error(interaction: discord.Interaction, error: discord.
         embed = discord.Embed(title = "Cooldown", description = error, color = Color.red())
         msg = await interaction.followup.send(embed = embed, ephemeral = True)
         await asyncio.sleep(5)
-        msg.delete()
+        await msg.delete()
 
 # Run bot with token
 client.run(discord_token)
