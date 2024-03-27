@@ -12,7 +12,7 @@ import re
 import time
 from datetime import datetime
 from datetime import timedelta
-import psutil
+#import psutil
 import cpuinfo
 
 # Imports - Wikipedia
@@ -517,8 +517,10 @@ async def self(interaction: discord.Interaction):
     d = datetime(1,1,1) + sec
 
     embed.add_field(name = "CPU Name", value = cpuinfo.get_cpu_info()['brand_raw'], inline = False)
-    embed.add_field(name = "Percent CPU Usage", value = psutil.cpu_percent(), inline = False)
-    embed.add_field(name = "Percent RAM Usage", value = psutil.virtual_memory().percent, inline = False)
+    #embed.add_field(name = "Percent CPU Usage", value = psutil.cpu_percent(), inline = False)
+    #embed.add_field(name = "Percent RAM Usage", value = psutil.virtual_memory().percent, inline = False)
+    embed.add_field(name = "Percent CPU Usage", value = "Temporarily Disabled", inline = False)
+    embed.add_field(name = "Percent RAM Usage", value = "Temporarily Disabled", inline = False)
     embed.add_field(name = "System Uptime", value = ("%d:%d:%d:%d" % (d.day-1, d.hour, d.minute, d.second)), inline = False)
     embed.add_field(name = "OS Name", value = os.name, inline = False)
     embed.add_field(name = "Bot Latency", value = f"{round(client.latency*1000, 2)}ms", inline = False)
