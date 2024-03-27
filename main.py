@@ -1368,7 +1368,7 @@ async def self(interaction: discord.Interaction, query: str):
         else:
             embed = discord.Embed(title = "No results found.", color = Color.red())
             embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
-            await interaction.followup.send(embed = embed)
+            await interaction.edit_original_response(embed = embed)
     except Exception:
         embed = discord.Embed(title = "An error has occured.", description = "Please try again later or message <@563372552643149825> for assistance.")
         embed.set_footer(text = f"Requested by {interaction.user.name}", icon_url = interaction.user.avatar.url)
